@@ -32,6 +32,12 @@
                 img: new Image(),
                 path: 'images/mushroom.png',
                 pts: -1
+              },
+              {
+                img: new Image(),
+                path: 'images/elixir.png',
+                pts: 0,
+                type: "elixir"
               }
             ],
             obj = images[Math.floor(Math.random()*images.length)];
@@ -56,7 +62,8 @@
           y: Math.floor(Math.random()*rows-1)+1,
           id: _ID,
           img: obj.img,
-          pts: obj.pts
+          pts: obj.pts,
+          type: obj.type || ""
         }
       },
 

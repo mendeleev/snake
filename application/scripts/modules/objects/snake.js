@@ -15,6 +15,7 @@
       tileSize: 0,
       gameOver: false,
       pts: 0,
+      godMode: true,
 
       /**
        * Snake initialize function
@@ -48,7 +49,7 @@
        * Prints one cell styled for snake object
        */
       printItem: function(ctx, coords) {
-        ctx.fillStyle = "green";
+        ctx.fillStyle = this.godMode ? "blue" : "green";
         ctx.fillRect(coords.x*this.tileSize, coords.y*this.tileSize, this.tileSize, this.tileSize);
       },
 
@@ -162,6 +163,9 @@
        * @return {Boolean}
        */
       isBitten: function(coords) {
+        if(this.godMode) {
+          return false;
+        }
         for(var i = 0; i < elements.length; i++) {
           if(elements[i].x === coords.x && elements[i].y === coords.y) {
             return true;
@@ -184,7 +188,10 @@
       collisionWith: function(obj, apples) {
         switch (obj.id) {
           case _APPLE:
-            this.increase(obj.pts || 1);
+            this.godMode = (obj.type === "elixir");
+            if(!this.godMode) {
+              this.increase(obj.pts || 0);
+            }
             break;
           default:
             console.log("collision with unknown object");
