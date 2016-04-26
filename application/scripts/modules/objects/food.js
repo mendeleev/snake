@@ -1,7 +1,13 @@
 (function() {
-  define("modules/objects/food", [], function() {
-    var elements = [],
-      _ID = 2;
+  define("modules/objects/food",
+  [
+    "modules/objects/food/apple",
+    "modules/objects/food/strawberry",
+    "modules/objects/food/mushroom",
+    "modules/objects/food/elixir"
+  ],
+  function(apple, strawberry, mushroom, elixir) {
+    var elements = [];
 
     return {
       tileSize: 0,
@@ -12,36 +18,19 @@
         this.generateFood(cols, rows, num);
       },
 
-      getId: function() {
-        return _ID;
+      getId: function(ID) {
+        return ID;
       },
 
       getImage: function() {
         var images = [
-              {
-                img: new Image(),
-                path: 'images/apple.png',
-                pts: 1
-              },
-              {
-                img: new Image(),
-                path: 'images/strawberry.png',
-                pts: 2
-              },
-              {
-                img: new Image(),
-                path: 'images/mushroom.png',
-                pts: -1
-              },
-              {
-                img: new Image(),
-                path: 'images/elixir.png',
-                pts: 0,
-                type: "elixir"
-              }
+              apple,
+              strawberry,
+              mushroom,
+              elixir
             ],
             obj = images[Math.floor(Math.random()*images.length)];
-        obj.img.src = obj.path;
+
         return obj;
       },
 
@@ -60,7 +49,7 @@
         return {
           x: Math.floor(Math.random()*cols-1)+1,
           y: Math.floor(Math.random()*rows-1)+1,
-          id: _ID,
+          id: obj.id,
           img: obj.img,
           pts: obj.pts,
           type: obj.type || ""

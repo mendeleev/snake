@@ -2,11 +2,17 @@
   define("modules/objects/snake", [], function() {
     var size = 3,
       _ID = 1,
+      /*controll keys*/
       _LEFT = 37,
       _RIGHT = 39,
       _UP = 38,
       _DOWN = 40,
+      /*food*/
       _APPLE = 2,
+      _STRAWBERRY = 3,
+      _MUSHROOM = 4,
+      _ELIXIR = 5,
+      /*snake elements*/
       elements, direction;
 
     return {
@@ -22,6 +28,7 @@
        */
       init: function(cols, rows, tileSize) {
         this.gameOver = false;
+        this.godMode = false;
         direction = _RIGHT;
         elements = [];
         this.pts = 0;
@@ -87,11 +94,13 @@
        */
       initEvents: function() {
         document.addEventListener("keyup", function(e) {
+          if(this.lock) return;
           switch(true) {
             case Boolean(e.keyCode === _UP && direction !== _DOWN):
             case Boolean(e.keyCode === _DOWN && direction !== _UP):
             case Boolean(e.keyCode === _LEFT && direction !== _RIGHT):
             case Boolean(e.keyCode === _RIGHT && direction !== _LEFT):
+              this.lock = true;
               direction = e.keyCode;
           }
         }.bind(this));
@@ -124,9 +133,13 @@
         }
 
         this.gameOver = this.isOverboard(tail) || this.isBitten(tail);
+        this.lock = false;
         elements.push(tail);
       },
 
+      /**
+       * add one more cell to snake elements
+       */
       increase: function(pts) {
         var tail = this.getElement(elements[0].x, elements[0].y);
         switch(direction) {
@@ -145,7 +158,6 @@
         }
 
         elements.unshift(tail);
-
         this.pts += pts;
       },
 
@@ -175,6 +187,10 @@
         return false;
       },
 
+      /**
+       * detects if head has collision with objects
+       * calls a collisionWith function if collision detected
+       */
       detectCollision: function(apples) {
         var head = elements[elements.length-1];
         for(var i = 0; i < apples.length; i++) {
@@ -185,18 +201,26 @@
         }
       },
 
+      /**
+       * desides what to do with collision depends on object
+       */
       collisionWith: function(obj, apples) {
         switch (obj.id) {
           case _APPLE:
-            this.godMode = (obj.type === "elixir");
-            if(!this.godMode) {
-              this.increase(obj.pts || 0);
-            }
+          case _STRAWBERRY:
+          case _MUSHROOM:
+            this.godMode = false;
+            this.increase(obj.pts || 0);
+            break;
+          case _ELIXIR:
+            this.godMode = true;
             break;
           default:
-            console.log("collision with unknown object");
+            this.gameOver = true;
+            console.log("collision with unknown object -> ", obj);
         }
 
+        /*removes the eaten apple from Array*/
         if(apples.indexOf(obj) >= 0) {
           apples.splice(apples.indexOf(obj), 1);
         }

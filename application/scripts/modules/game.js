@@ -94,7 +94,7 @@
             snake.printItem(ctx, obj);
             break;
           /*check if that is a food cell*/
-          case food.getId():
+          case food.getId(obj.id):
             food.printItem(ctx, obj);
             break;
           /*for unknown objects in case of something goes wrong*/
@@ -131,7 +131,7 @@
         for(var i = 0; i < elements.length; i++) {
           this.printItem(elements[i], _TILE_SIZE);
         }
-
+        
         this.printPoints();
       },
 

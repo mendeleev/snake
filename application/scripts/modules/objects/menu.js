@@ -1,14 +1,22 @@
+/**
+ * menu module for snake game
+ * @author - Andrii Priadko
+ */
+
 (function() {
   define("modules/objects/menu", [], function() {
 
     return {
-      ctx: 0,
-      cols: 0,
-      rows: 0,
-      tileSize: 0,
-      width: 0,
-      height: 0,
+      ctx: null, //canvas 2d context
+      cols: 0, //number of cols in game field
+      rows: 0, //number of rows in game field
+      tileSize: 0, //size of tile in the game field
+      width: 0, //game field width
+      height: 0, //game field height
 
+      /**
+       * Initialize a begining state
+       */
       init: function(cols, rows, tileSize) {
         this.cols = cols;
         this.rows = rows;
@@ -17,6 +25,10 @@
         this.height = this.rows * this.tileSize;
       },
 
+      /**
+       * That function renders a gameover screen
+       *
+       */
       gameOver: function(ctx, pts) {
         var best = this.getBestScore() > pts ? this.getBestScore() : pts;
 
@@ -40,10 +52,18 @@
         this.setBestScore(best);
       },
 
+      /**
+       * Gets a bestScore value from the localStorage
+       * @return {Number} - best score
+       */
       getBestScore: function() {
         return localStorage.getItem("bestScore") || 0;
       },
 
+      /**
+       * Store best score value to the localStorage
+       * @return {Boolean} - best score save result
+       */
       setBestScore: function(pts) {
         return localStorage.setItem("bestScore", (pts || 0));
       }
