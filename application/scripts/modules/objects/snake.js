@@ -191,14 +191,20 @@
        * detects if head has collision with objects
        * calls a collisionWith function if collision detected
        */
-      detectCollision: function(apples) {
-        var head = elements[elements.length-1];
-        for(var i = 0; i < apples.length; i++) {
-          if(head.x === apples[i].x && head.y === apples[i].y) {
-            this.collisionWith(apples[i], apples);
+      detectCollision: function(food) {
+        var head = elements[elements.length-1],
+            collision;
+
+        for(var i = 0; i < food.length; i++) {
+          /*check if head has collision with food*/
+          if(head.x === food[i].x && head.y === food[i].y) {
+            collision = food[i];
+            this.collisionWith(food[i], food);
             break;
           }
         }
+
+        return collision || null;
       },
 
       /**

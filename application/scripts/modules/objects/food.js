@@ -7,7 +7,14 @@
     "modules/objects/food/elixir"
   ],
   function(apple, strawberry, mushroom, elixir) {
-    var elements = [];
+    var elements = [],
+      /* what number of which sort of food will be generated */
+      params = {
+        apple:10,
+        strawberry: 3,
+        mushroom: 5,
+        elixir: 1
+      };
 
     return {
       tileSize: 0,
@@ -22,14 +29,14 @@
         return ID;
       },
 
-      getImage: function() {
-        var images = [
-              apple,
-              strawberry,
-              mushroom,
-              elixir
-            ],
-            obj = images[Math.floor(Math.random()*images.length)];
+      getImage: function(type) {
+        var images = {
+              apple: apple,
+              strawberry: strawberry,
+              mushroom: mushroom,
+              elixir: elixir
+            },
+            obj = images[type] || apple;
 
         return obj;
       },
@@ -38,14 +45,24 @@
         ctx.drawImage(obj.img, obj.x*this.tileSize, obj.y*this.tileSize, this.tileSize, this.tileSize);
       },
 
+      add: function(cols, rows, obj) {
+        var type = obj.type || "apple";
+        elements.push(this. getFood(cols, rows, type));
+      },
+
       generateFood: function(cols, rows, num) {
-        for(var i = 0; i < num; i++) {
-          elements.push(this.getFood(cols, rows));
+        var i;
+        /*loop every param*/
+        for(var name in params) {
+          /*generate food for each param in the object*/
+          for(i = 0; i < params[name]; i++) {
+            elements.push(this.getFood(cols, rows, name));
+          }
         }
       },
 
-      getFood: function(cols, rows) {
-        var obj = this.getImage();
+      getFood: function(cols, rows, type) {
+        var obj = this.getImage(type);
         return {
           x: Math.floor(Math.random()*cols-1)+1,
           y: Math.floor(Math.random()*rows-1)+1,

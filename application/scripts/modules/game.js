@@ -115,15 +115,15 @@
        * render all elements
        */
       render: function() {
-        ctx.clearRect(0,0,_COLS*_TILE_SIZE, _ROWS*_TILE_SIZE);
         var snakeElements = snake.getElements(),
-          apples = food.getElements(),
-          elements = apples.concat(snakeElements);
+            apples = food.getElements(),
+            elements = apples.concat(snakeElements),
+            collision = snake.detectCollision(apples);
 
-        snake.detectCollision(apples);
+        ctx.clearRect(0,0,_COLS*_TILE_SIZE, _ROWS*_TILE_SIZE);
 
-        if(apples.length < _APPLES) {
-          food.generateFood(_COLS, _ROWS, _APPLES-apples.length);
+        if(collision) {
+          food.add(_COLS, _ROWS, collision);
         }
 
         this.printGrid(_COLS, _ROWS, _TILE_SIZE);
@@ -131,7 +131,7 @@
         for(var i = 0; i < elements.length; i++) {
           this.printItem(elements[i], _TILE_SIZE);
         }
-        
+
         this.printPoints();
       },
 

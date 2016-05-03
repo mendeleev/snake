@@ -7,7 +7,8 @@
     return {
       id: 2,
       pts: 1,
-      img: img
+      img: img,
+      type: "apple"
     };
   });
 

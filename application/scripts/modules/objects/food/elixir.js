@@ -7,7 +7,8 @@
     return {
       id: 5,
       pts: 0,
-      img: img
+      img: img,
+      type: "elixir"
     }
   });
 })();

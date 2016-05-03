@@ -7,7 +7,8 @@
     return {
       id: 3,
       pts: 2,
-      img: img
+      img: img,
+      type: "strawberry"
     }
   });
 })();
